@@ -9,6 +9,10 @@ from selenium.webdriver.support import expected_conditions as EC
 import requests
 import math
 import pandas as pd
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 def get_text(url):
     chrome_options = Options()
@@ -26,8 +30,9 @@ def get_text(url):
     driver.quit()
     return full_text
 
-api_key = "AIzaSyCSHrAFKl82mhUCGXC9dQBkBSarJ9hUxyc"
-console_id = "15a4ea5e446f84812"
+api_key = os.getenv("API_KEY")
+console_id = os.getenv("CONSOLE_ID")
+
 queries = ["Is Climate Change Real?"]
 
 end_year = 2024
