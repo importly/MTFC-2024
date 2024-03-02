@@ -35,53 +35,57 @@ console_id = os.getenv("CONSOLE_ID")
 
 queries = ["Is Climate Change Real?"]
 
-end_year = 2024
-start_year = 1954
-
-year_range = end_year - start_year
-incr = year_range // 10
-#incr = 1 # when we have final prompt
-searchpoint = end_year - incr
+incr = 58
+max_year = 2024
+min_year = 2000
+upper_month = 0
+month_incr = incr % 12
+year_incr = incr // 12
+upper_year = max_year
+lower_year = upper_year - year_incr
 
 for query in queries:
     dataset = {
         "title": [],
         "link": [],
-        "date": [],
+        "determined_date": [],
         "date_range": [],
         "content": [],
         "snippet": []
     }
-    while (searchpoint > start_year - incr):
-        for i in range(1, 100, 10):
-            print(i)
-            res = requests.get(f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={console_id}&q={query}&start={i}&num=10&sort=date:r:{searchpoint}0000:{searchpoint+incr}0000").json()
-            if "items" in res:
-                for i, result in enumerate(res["items"]):
-                    print(result["link"])
-                    content = get_text(result["link"])
-                    date = "NA"
-                    try:
-                        res = requests.head(result["link"])
-                        date_data = res.headers.get("Last-Modified")
-                        if date_data:
-                            date = date_data
-                        else:
-                            meta = result["pagemap"]["metatags"][0]
-                            res = [val for key, val in meta.items() if "date" in key]
-                            if res:
-                                date = res[0]
-                    except:
-                        pass
-                    dataset["title"].append(result["title"])
-                    dataset["link"].append(result["link"])
-                    dataset["date"].append(date)
-                    dataset["date_range"].append(f"{searchpoint}-{searchpoint+incr}")
-                    dataset["content"].append(content)
-                    dataset["snippet"].append(result["snippet"])
+    while (upper_year > min_year):
+        lower_month = upper_month - month_incr
+        if lower_month < 0:
+            lower_month += 12
+            lower_year -= 1
+        print(f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={console_id}&q={query}&start={1}&num=10&sort=date:r:{lower_year}{'{:02d}'.format(lower_month)}00:{upper_year}{'{:02d}'.format(upper_month)}00")
+        res = requests.get(f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={console_id}&q={query}&start={1}&num=10&sort=date:r:{lower_year}{'{:02d}'.format(lower_month)}00:{upper_year}{'{:02d}'.format(upper_month)}00").json()    
+        upper_year = lower_year
+        lower_year -= year_incr
+        upper_month = lower_month
+        if "items" in res:
+            for i, result in enumerate(res["items"]):
+                print(result["link"])
+                content = get_text(result["link"])
+                date = "NA"
+                try:
+                    res = requests.head(result["link"])
+                    date_data = res.headers.get("Last-Modified")
+                    if date_data:
+                        date = date_data
+                    else:
+                        meta = result["pagemap"]["metatags"][0]
+                        res = [val for key, val in meta.items() if "date" in key]
+                        if res:
+                            date = res[0]
+                except:
+                    pass
+                dataset["title"].append(result["title"])
+                dataset["link"].append(result["link"])
+                dataset["determined_date"].append(date)
+                dataset["date_range"].append(f"{lower_year}{lower_month}-{upper_year}{upper_month}")
+                dataset["content"].append(content)
+                dataset["snippet"].append(result["snippet"])
 
-                datasetFile = pd.DataFrame(dataset)
-                datasetFile.to_csv(f"{query}.csv")
-        searchpoint -= incr
-
-                                                  
+            datasetFile = pd.DataFrame(dataset)
+            datasetFile.to_csv(f"{query}.csv")                                  
