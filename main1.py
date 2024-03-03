@@ -1,5 +1,6 @@
 import os
 import pathlib
+import threading
 
 import pandas as pd
 from colorama import init
@@ -78,9 +79,21 @@ def score(name="US_foreign_policy_in_the_Middle_East1974-2024by3months"):
     print("saved, next")
 
 
+def process_file(filename):
+    # Create a thread for each file
+    thread = threading.Thread(target=score, args=(filename,))
+    thread.start()
+
 directory = os.fsencode(".")
 files = os.listdir(directory)
+
+# Process each file in a separate thread
 for file in files:
     filename = os.fsdecode(file)
     if filename.endswith(".csv"):
-        score(filename[:-4])
+        process_file(filename[:-4])
+
+# Wait for all threads to finish before exiting the main program
+for thread in threading.enumerate():
+    if thread is not threading.current_thread():
+        thread.join()
