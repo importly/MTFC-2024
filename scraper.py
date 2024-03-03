@@ -36,19 +36,19 @@ api_key = os.getenv("API_KEY")
 console_id = os.getenv("CONSOLE_ID")
 
 queries = [ 
-    #"How should the United States treat Russia?",
+    "How should the United States treat Russia?",
     #"How effective was the War on Drugs?",
     #"How should border security be enforced?",
     #"Support for healthcare reform.",
-    #"Is climate change important?",
+    "Is climate change important?",
     #"Should the United States keep funding NASA?",
     #"Should there be more free trade agreements?",
-    "US foreign policy in the Middle East",
-    "racial equality government policies",
-    "gender equality governemnt policies",
-    "Is nuclear power safe?",
-    "What are the views on Hydroelectric Power?",
-    "What are the views on social media, interconnectivity, and globalization?"
+    #"US foreign policy in the Middle East",
+    #"racial equality government policies",
+    #"gender equality governemnt policies",
+    #"Is nuclear power safe?",
+    #"What are the views on Hydroelectric Power?",
+    #"What are the views on social media, interconnectivity, and globalization?"
 ]
 
 incr = 3
@@ -76,7 +76,7 @@ for query in queries:
         else:
             print(f"/home/prithish/MTFC/MTFC-2024/{filename}")
             os.remove(f"/home/prithish/MTFC/MTFC-2024/{filename}")
-    break
+
     dataset = {
         "title": [],
         "link": [],
