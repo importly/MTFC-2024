@@ -40,9 +40,9 @@ queries = [
     #"How effective was the War on Drugs?",
     #"How should border security be enforced?",
     #"Support for healthcare reform.",
-    "Is climate change important?",
-    "Should the United States keep funding NASA?",
-    "Should there be more free trade agreements?",
+    #"Is climate change important?",
+    #"Should the United States keep funding NASA?",
+    #"Should there be more free trade agreements?",
     "US foreign policy in the Middle East",
     "racial equality government policies",
     "gender equality governemnt policies",
@@ -71,7 +71,7 @@ for query in queries:
     for file in files:
         filename = os.fsdecode(file)
         print(filename)
-        if filename.endswith(".py") or filename.endswith(".csv") or filename == ".git" or filename == ".env" or filename == "chromedriver": 
+        if filename.endswith(".py") or filename.endswith(".csv") or filename == ".git" or filename == ".env" or filename == ".gitignore" or filename == "chromedriver": 
             continue
         else:
             print(f"/home/prithish/MTFC/MTFC-2024/{filename}")
