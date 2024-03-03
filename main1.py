@@ -68,7 +68,6 @@ def score(name="US_foreign_policy_in_the_Middle_East1974-2024by3months"):
     table = pd.read_csv(name + ".csv")
     print(name)
     print(table.head(1))
-    table = table.head(1)
     for i, row in table.iterrows():
         emotion_counts = getScores(row["content"])
         # print(emotion_counts)
