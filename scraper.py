@@ -76,7 +76,7 @@ for query in queries:
         else:
             print(f"/home/prithish/MTFC/MTFC-2024/{filename}")
             os.remove(f"/home/prithish/MTFC/MTFC-2024/{filename}")
-    
+    break
     dataset = {
         "title": [],
         "link": [],
