@@ -70,7 +70,7 @@ def score(name="US_foreign_policy_in_the_Middle_East1974-2024by3months"):
     print(table.head(1))
     for i, row in table.iterrows():
         emotion_counts = getScores(row["content"])
-        # print(emotion_counts)
+        print(emotion_counts)
         for emotion in emotion_counts.keys():
             table.loc[i, emotion] = emotion_counts[emotion]  # print(row)
     table.fillna(0.0, inplace=True)
